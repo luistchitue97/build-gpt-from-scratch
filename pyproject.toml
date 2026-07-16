@@ -1,0 +1,16 @@
+[project]
+name = "build-gpt-from-scratch"
+version = "0.1.0"
+description = "A GPT implementation from scratch"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "torch",
+    "numpy",
+    "tqdm",
+    "pyyaml",
+]
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"

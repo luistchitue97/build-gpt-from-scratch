@@ -1,0 +1,5 @@
+batch_size: 32
+learning_rate: 0.0003
+max_steps: 10000
+warmup_steps: 100
+weight_decay: 0.01

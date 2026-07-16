@@ -1,0 +1,6 @@
+model_name: gpt-from-scratch
+vocab_size: 5000
+embedding_dim: 384
+num_layers: 6
+num_heads: 6
+max_seq_len: 256
