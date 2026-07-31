@@ -1,5 +1,5 @@
 import torch.nn as nn
-import activations.GELU as GELU
+from activations.GELU import GELU
 
 class FeedForward(nn.Module):
     def __init__(self, cfg):

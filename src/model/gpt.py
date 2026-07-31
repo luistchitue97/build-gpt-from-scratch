@@ -1,6 +1,6 @@
 import torch.nn as nn
 import torch
-import layers.layer_norm as LayerNorm
+from layers.layer_norm import LayerNorm
 
 from transformer.block import TransformerBlock
 
@@ -21,12 +21,15 @@ class GPTModel(nn.Module):
         )
 
     def forward(self, in_idx):
+        if in_idx.dim() != 2:
+            raise ValueError(f"Expected input of shape [batch_size, seq_len], got {tuple(in_idx.shape)}")
+
         batch_size, seq_len = in_idx.shape
-        tok_emb = self.tok_emb(in_idx)
+        tok_embeds = self.tok_emb(in_idx)
 
-        pos_emb = self.pos_emb(torch.arange(seq_len, device=in_idx.device))
+        pos_embeds = self.pos_emb(torch.arange(seq_len, device=in_idx.device))
 
-        x = tok_emb + pos_emb
+        x = tok_embeds + pos_embeds
         x = self.drop_emb(x)
         x = self.trf_blocks(x)
         x = self.final_norm(x)

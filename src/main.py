@@ -13,12 +13,13 @@ model = GPTModel(GPT_CONFIG_124M)
 #print("Targets:", targets)
 
 
-inputs = torch.tensor(
-    [[1, 2, 3, 4]],
+batch = torch.tensor(
+    [[1, 2, 3, 4],
+     [2, 3, 4, 5]],
     dtype=torch.long,
 )
 
-out = model(inputs)
-print("Input batch:\n", inputs)
+out = model(batch)
+print("Input batch shape:", batch.shape)
 print("Output shape:", out.shape)
 print(out)
