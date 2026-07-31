@@ -1,7 +1,6 @@
-import tiktoken
+from data.dataloader import dataloader
 
-text = "hello, encode this text"
-tokenizer = tiktoken.get_encoding("gpt2")
-enc_text = tokenizer.encode(text)
-
-print(enc_text)
+iterator = iter(dataloader())
+inputs, targets = next(iterator)
+print("Inputs:", inputs)
+print("Targets:", targets)
