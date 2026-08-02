@@ -1,12 +1,12 @@
 import torch
 
-from data.dataloader import dataloader
+from data.dataloader import create_dataloader
 from attention.multi_head_attention import MultiHeadAttention
 from model.gpt import GPTModel
 from utils.model_config import GPT_CONFIG_124M
 from inference.generate import generate_text
 import tiktoken
-from data.the_veredict import RAW_TEXT
+from data.the_veredict import RAW_TEXT as text_data
 
 
 def text_to_token_ids(text, tokenizer):
@@ -68,4 +68,38 @@ loss = torch.nn.functional.cross_entropy(logits_flat, targets_flat)
 #print("Loss:", loss)
 
 
-print(RAW_TEXT[:500])  # Print the first 500 characters of the text
+######## TRAINING STARTS HERE ########
+train_ratio = 0.90
+split_idx = int(len(text_data) * train_ratio)
+train_data = text_data[:split_idx]
+val_data = text_data[split_idx:]
+
+torch.manual_seed(123)
+
+train_loader = create_dataloader(
+    txt=train_data,
+    batch_size=2,
+    max_context_length=GPT_CONFIG_124M["context_length"],
+    stride=GPT_CONFIG_124M["context_length"],
+    drop_last=True,
+    shuffle=True,
+    num_workers=0   
+)
+
+var_loader = create_dataloader(
+    txt=val_data,
+    batch_size=2,
+    max_context_length=GPT_CONFIG_124M["context_length"],
+    stride=GPT_CONFIG_124M["context_length"],
+    drop_last=False,
+    shuffle=False,
+    num_workers=0
+)
+
+print("Train loader:")
+for x, y in train_loader:
+    print(x.shape, y.shape)
+
+print("\nValidation loader:")
+for x, y in var_loader:
+    print(x.shape, y.shape)
