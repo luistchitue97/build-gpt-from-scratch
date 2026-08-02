@@ -1,7 +1,7 @@
 from torch.utils.data import DataLoader
 from data.dataset import Dataset
 
-def dataloader():
+def create_dataloader():
     # Example usage of the Dataset class
     txt = "This is an example text for the dataset."
     context_length = 2
