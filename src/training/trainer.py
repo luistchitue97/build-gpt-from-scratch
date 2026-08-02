@@ -4,7 +4,7 @@ from model.gpt import GPTModel
 from utils.model_config import GPT_CONFIG_124M
 from data.the_veredict import RAW_TEXT as text_data
 from inference.generate import generate_text as generate_text_simple
-
+import tiktoken
 
 ######## TRAINING STARTS HERE ########
 train_ratio = 0.90
@@ -12,7 +12,7 @@ split_idx = int(len(text_data) * train_ratio)
 train_data = text_data[:split_idx]
 val_data = text_data[split_idx:]
 
-torch.manual_seed(123)
+#torch.manual_seed(123)
 
 def text_to_token_ids(text, tokenizer):
     encoded = tokenizer.encode(text, allowed_special={"<|endoftext|>"})
@@ -142,3 +142,28 @@ def generate_and_print_sample(model, tokenizer, device, start_context):
     decoded_text = token_ids_to_text(token_ids, tokenizer)
     print(decoded_text.replace("\n", " "))    
     model.train()
+
+
+torch.manual_seed(123)
+model = GPTModel(GPT_CONFIG_124M)
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model.to(device)
+optimizer = torch.optim.AdamW(
+    model.parameters(),
+    lr=0.0004,
+    weight_decay=0.1,
+)
+
+num_epochs = 10
+train_losses, val_losses, track_tokens_seen = train_model_simple(
+    model=model,
+    train_loader=train_loader,
+    val_loader=val_loader,
+    optimizer=optimizer,
+    device=device,
+    num_epochs=num_epochs,
+    eval_freq=5,
+    eval_iter=5,
+    start_context="Every effort moves you",
+    tokenizer=tiktoken.get_encoding("gpt2")
+)
