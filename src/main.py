@@ -67,39 +67,3 @@ targets_flat = targets.flatten()
 loss = torch.nn.functional.cross_entropy(logits_flat, targets_flat)
 #print("Loss:", loss)
 
-
-######## TRAINING STARTS HERE ########
-train_ratio = 0.90
-split_idx = int(len(text_data) * train_ratio)
-train_data = text_data[:split_idx]
-val_data = text_data[split_idx:]
-
-torch.manual_seed(123)
-
-train_loader = create_dataloader(
-    txt=train_data,
-    batch_size=2,
-    max_context_length=GPT_CONFIG_124M["context_length"],
-    stride=GPT_CONFIG_124M["context_length"],
-    drop_last=True,
-    shuffle=True,
-    num_workers=0   
-)
-
-var_loader = create_dataloader(
-    txt=val_data,
-    batch_size=2,
-    max_context_length=GPT_CONFIG_124M["context_length"],
-    stride=GPT_CONFIG_124M["context_length"],
-    drop_last=False,
-    shuffle=False,
-    num_workers=0
-)
-
-print("Train loader:")
-for x, y in train_loader:
-    print(x.shape, y.shape)
-
-print("\nValidation loader:")
-for x, y in var_loader:
-    print(x.shape, y.shape)
