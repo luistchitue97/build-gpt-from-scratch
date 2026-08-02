@@ -1,9 +1,9 @@
 import torch
-from data.dataloader import create_dataloader
-from model.gpt import GPTModel
-from utils.model_config import GPT_CONFIG_124M
-from data.the_veredict import RAW_TEXT as text_data
-from inference.generate import generate_text as generate_text_simple
+from src.data.dataloader import create_dataloader
+from src.model.gpt import GPTModel
+from src.utils.model_config import GPT_CONFIG_124M
+from src.data.the_veredict import RAW_TEXT as text_data
+from src.inference.generate import generate_text as generate_text_simple
 import tiktoken
 
 ######## TRAINING STARTS HERE ########
