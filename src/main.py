@@ -6,6 +6,7 @@ from model.gpt import GPTModel
 from utils.model_config import GPT_CONFIG_124M
 from inference.generate import generate_text
 import tiktoken
+from data.the_veredict import RAW_TEXT
 
 
 def text_to_token_ids(text, tokenizer):
@@ -56,12 +57,15 @@ log_probas = torch.log(torch.cat((target_probas_1, target_probas_2)))
 #print(log_probas)
 
 avg_log_proba = torch.mean(log_probas)
-print(avg_log_proba)
+#print(avg_log_proba)
 
 logits_flat = logits.flatten(0,1)
 targets_flat = targets.flatten()
-print("Flattened logits:", logits_flat.shape)
-print("Flattened targets:", targets_flat.shape)
+#print("Flattened logits:", logits_flat.shape)
+#print("Flattened targets:", targets_flat.shape)
 
 loss = torch.nn.functional.cross_entropy(logits_flat, targets_flat)
-print("Loss:", loss)
+#print("Loss:", loss)
+
+
+print(RAW_TEXT[:500])  # Print the first 500 characters of the text
